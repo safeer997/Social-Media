@@ -8,18 +8,16 @@ const reducerFunction = (currentState, action) => {
     newState = currentState.filter((post) => post.id !== action.payload.id);
     return newState;
   } else if (action.type === "CREATE_POST") {
-    newState = [action.payload,...currentState];
-
+    newState = [action.payload, ...currentState];
     return newState;
+  } else if (action.type === "ADD_POST_SERVER") {
+    newState = action.payload.apiPosts;
   }
   return newState;
 };
 
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(
-    reducerFunction,
-    DEFAULT_POST_LIST
-  );
+  const [postList, dispatchPostList] = useReducer(reducerFunction, []);
 
   const deletePost = (postIdToBeDeleted) => {
     dispatchPostList({
@@ -44,12 +42,22 @@ const PostListProvider = ({ children }) => {
     });
   };
 
+  const addPostFromServer = (apiPosts) => {
+    dispatchPostList({
+      type: "ADD_POST_SERVER",
+      payload: {
+        apiPosts: apiPosts,
+      },
+    });
+  };
+
   return (
     <PostListContext.Provider
       value={{
         postList: postList,
         deletePost: deletePost,
         createPost: createPost,
+        addPostFromServer: addPostFromServer,
       }}
     >
       {children}
@@ -57,30 +65,3 @@ const PostListProvider = ({ children }) => {
   );
 };
 export default PostListProvider;
-
-const DEFAULT_POST_LIST = [
-  {
-    id: "1",
-    title: "This is a robot speaking",
-    body: "In the 21st century, artificial intelligence is revolutionizing every aspect of our lives.",
-    reactions: "12",
-    userId: "user-3",
-    tags: ["robot", "ai", "future"],
-  },
-  {
-    id: "2",
-    title: "Exploring the Future with AI",
-    body: "Join us in exploring the possibilities of AI in shaping our future. From self-driving cars to personalized medicine, the potential is limitless!",
-    reactions: "35",
-    userId: "user-5",
-    tags: ["future", "ai", "technology"],
-  },
-  {
-    id: "3",
-    title: "Robots and Humanity",
-    body: "Let's discuss the impact of robotics on society and ethics. As robots become more integrated into our daily lives, it raises important questions about ethics and human identity.",
-    reactions: "45",
-    userId: "user-7",
-    tags: ["robot", "future", "ethics"],
-  },
-];
