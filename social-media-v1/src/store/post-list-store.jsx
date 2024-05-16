@@ -8,17 +8,7 @@ const reducerFunction = (currentState, action) => {
     newState = currentState.filter((post) => post.id !== action.payload.id);
     return newState;
   } else if (action.type === "CREATE_POST") {
-    newState = [
-      ...currentState,
-      {
-        id: "1",
-        title: action.payload.title,
-        body: "21st century is the era of artificial intelligence ",
-        reactions: "12",
-        userId: "user-3",
-        tags: ["robot", "ai", "future"],
-      },
-    ];
+    newState = [action.payload,...currentState];
 
     return newState;
   }
@@ -40,11 +30,16 @@ const PostListProvider = ({ children }) => {
     });
   };
 
-  const createPost = (userPost) => {
+  const createPost = (userId, postTitle, postBody, reactions, hashtag) => {
     dispatchPostList({
       type: "CREATE_POST",
       payload: {
-        title: userPost,
+        id: Date.now(),
+        title: postTitle,
+        body: postBody,
+        reactions: reactions,
+        userId: userId,
+        tags: hashtag,
       },
     });
   };
@@ -89,4 +84,3 @@ const DEFAULT_POST_LIST = [
     tags: ["robot", "future", "ethics"],
   },
 ];
-

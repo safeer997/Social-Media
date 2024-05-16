@@ -22,6 +22,7 @@ const Post = ({ title, body, reactions, tags, id }) => {
         <div className="hashtag-Container">
           {tags.map((tag) => (
             <span
+              key={tag}
               className="alert alert-primary hashtag"
               style={{ padding: "5px" }}
             >
@@ -29,9 +30,13 @@ const Post = ({ title, body, reactions, tags, id }) => {
             </span>
           ))}
         </div>
-        <button type="button" className="btn btn-success position-relative" style={{ padding: "2px 10px 2px 10px" }}>
+        <button
+          type="button"
+          className="btn btn-success position-relative"
+          style={{ padding: "2px 10px 2px 10px" }}
+        >
           <FcLike />
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+          <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
             {reactions}
           </span>
         </button>
