@@ -28,86 +28,88 @@ const CreatePost = ({ setSelectedTab }) => {
   };
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        handleClick();
-      }}
-    >
-      <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Enter Your User Id
-        </label>
-        <input
-          ref={userIdInputElement}
-          type="text"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="enter your user id"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Post Title
-        </label>
-        <input
-          ref={postTitleInputElement}
-          type="text"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="title"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Post
-        </label>
-        <textarea
-          ref={postBodyInputElement}
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="how are you feeling today ..."
-          rows="5"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Reactions
-        </label>
-        <input
-          ref={reactionsInputElement}
-          type="number"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="number of reactions"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Hashtags
-        </label>
-        <input
-          ref={hashtagInputElement}
-          type="text"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="enter your hashtags"
-          required
-        />
-      </div>
-      <button type="submit" className="btn btn-success">
-        Create Post
-      </button>
-    </form>
+    <div className="create-post">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          handleClick();
+        }}
+      >
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Enter Your User Id
+          </label>
+          <input
+            ref={userIdInputElement}
+            type="text"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="enter your user id"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Post Title
+          </label>
+          <input
+            ref={postTitleInputElement}
+            type="text"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="title"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Post
+          </label>
+          <textarea
+            ref={postBodyInputElement}
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="how are you feeling today ..."
+            rows="5"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Reactions
+          </label>
+          <input
+            ref={reactionsInputElement}
+            type="number"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="number of reactions"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Hashtags
+          </label>
+          <input
+            ref={hashtagInputElement}
+            type="text"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="enter your hashtags"
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-success">
+          Create Post
+        </button>
+      </form>
+    </div>
   );
 };
 export default CreatePost;
