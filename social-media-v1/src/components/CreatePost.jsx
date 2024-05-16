@@ -1,19 +1,40 @@
-const CreatePost = ()=>{
-  return <form>
-  <div className="mb-3">
-    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-    <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-  </div>
-  <div className="mb-3">
-    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-    <input type="password" className="form-control" id="exampleInputPassword1"/>
-  </div>
-  <div className="mb-3 form-check">
-    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" className="btn btn-primary">Submit</button>
-</form>
-}
+import { useRef } from "react";
+import { useContext } from "react";
+import { PostListContext } from "../store/post-list-store";
+
+const CreatePost = ({ setSelectedTab }) => {
+  const createPostInput = useRef(null);
+
+  const { createPost } = useContext(PostListContext);
+
+  return (
+    <form>
+      <div className="mb-3">
+        <label htmlFor="exampleInputEmail1" className="form-label">
+          Email address
+        </label>
+        <input
+          ref={createPostInput}
+          type="text"
+          className="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+        />
+        <div id="emailHelp" className="form-text">
+          Happy Posting
+        </div>
+      </div>
+      <button
+        onClick={() => {
+          createPost(createPostInput.current.value);
+          setSelectedTab("Home");
+        }}
+        type="button"
+        className="btn btn-success"
+      >
+        Create Post
+      </button>
+    </form>
+  );
+};
 export default CreatePost;

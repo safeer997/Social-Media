@@ -10,6 +10,16 @@
   min-height: 800px;
 }
 
-.tags{
-  margin:5px 5px
+
+
+.hashtag{
+ 
+ margin-right: 5px;
+ padding: 5px;
+
+}
+
+.hashtag-Container{
+  margin-top: 25px;
+  margin-bottom: 25px;
 }

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 export const PostListContext = createContext({});
 
@@ -6,6 +6,20 @@ const reducerFunction = (currentState, action) => {
   let newState = currentState;
   if (action.type === "DELETE_POST") {
     newState = currentState.filter((post) => post.id !== action.payload.id);
+    return newState;
+  } else if (action.type === "CREATE_POST") {
+    newState = [
+      ...currentState,
+      {
+        id: "1",
+        title: action.payload.title,
+        body: "21st century is the era of artificial intelligence ",
+        reactions: "12",
+        userId: "user-3",
+        tags: ["robot", "ai", "future"],
+      },
+    ];
+
     return newState;
   }
   return newState;
@@ -24,14 +38,24 @@ const PostListProvider = ({ children }) => {
         id: postIdToBeDeleted,
       },
     });
-    // console.log(postIdtobedeleted+" deleted");
   };
 
-  const addPost = () => {};
+  const createPost = (userPost) => {
+    dispatchPostList({
+      type: "CREATE_POST",
+      payload: {
+        title: userPost,
+      },
+    });
+  };
 
   return (
     <PostListContext.Provider
-      value={{ postList: postList, deletePost: deletePost, addPost: addPost }}
+      value={{
+        postList: postList,
+        deletePost: deletePost,
+        createPost: createPost,
+      }}
     >
       {children}
     </PostListContext.Provider>
@@ -43,7 +67,7 @@ const DEFAULT_POST_LIST = [
   {
     id: "1",
     title: "This is a robot speaking",
-    body: "21st century is the era of artificial intelligence",
+    body: "In the 21st century, artificial intelligence is revolutionizing every aspect of our lives.",
     reactions: "12",
     userId: "user-3",
     tags: ["robot", "ai", "future"],
@@ -51,7 +75,7 @@ const DEFAULT_POST_LIST = [
   {
     id: "2",
     title: "Exploring the Future with AI",
-    body: "Join us in exploring the possibilities of AI in shaping our future.",
+    body: "Join us in exploring the possibilities of AI in shaping our future. From self-driving cars to personalized medicine, the potential is limitless!",
     reactions: "35",
     userId: "user-5",
     tags: ["future", "ai", "technology"],
@@ -59,9 +83,10 @@ const DEFAULT_POST_LIST = [
   {
     id: "3",
     title: "Robots and Humanity",
-    body: "Let's discuss the impact of robotics on society and ethics.",
+    body: "Let's discuss the impact of robotics on society and ethics. As robots become more integrated into our daily lives, it raises important questions about ethics and human identity.",
     reactions: "45",
     userId: "user-7",
     tags: ["robot", "future", "ethics"],
   },
 ];
+
