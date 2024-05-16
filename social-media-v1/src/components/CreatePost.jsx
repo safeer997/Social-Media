@@ -82,7 +82,7 @@ const CreatePost = ({ setSelectedTab }) => {
         </label>
         <input
           ref={reactionsInputElement}
-          type="text"
+          type="number"
           className="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"

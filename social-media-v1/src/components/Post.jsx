@@ -26,7 +26,7 @@ const Post = ({ title, body, reactions, tags, id }) => {
               className="alert alert-primary hashtag"
               style={{ padding: "5px" }}
             >
-              {tag}
+              {"#"+tag}
             </span>
           ))}
         </div>
