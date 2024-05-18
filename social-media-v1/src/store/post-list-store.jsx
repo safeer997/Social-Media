@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer,useEffect, useState } from "react";
 
 export const PostListContext = createContext({});
 
@@ -8,7 +8,7 @@ const reducerFunction = (currentState, action) => {
     newState = currentState.filter((post) => post.id !== action.payload.id);
     return newState;
   } else if (action.type === "CREATE_POST") {
-    newState = [action.payload, ...currentState];
+    newState = [action.payload.postToServer, ...currentState];
     return newState;
   } else if (action.type === "ADD_POST_SERVER") {
     newState = action.payload.apiPosts;
@@ -28,16 +28,11 @@ const PostListProvider = ({ children }) => {
     });
   };
 
-  const createPost = (userId, postTitle, postBody, reactions, hashtag) => {
+  const createPost = (postToServer) => {
     dispatchPostList({
       type: "CREATE_POST",
       payload: {
-        id: Date.now(),
-        title: postTitle,
-        body: postBody,
-        reactions: reactions,
-        userId: userId,
-        tags: hashtag,
+       postToServer:postToServer
       },
     });
   };
@@ -51,13 +46,36 @@ const PostListProvider = ({ children }) => {
     });
   };
 
+  const [fetching, setFetching] = useState(false);
+
+  useEffect(() => {
+    if (postList.length === 0) {
+    
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      setFetching(true);
+      fetch("https://dummyjson.com/posts", { signal })
+        .then((res) => res.json())
+        .then((obj) => {
+          addPostFromServer(obj.posts);
+          setFetching(false);
+        });
+
+      return () => {
+        console.log("Fetch aborted");
+        controller.abort();
+      };
+    }
+  }, []);
+
   return (
     <PostListContext.Provider
       value={{
         postList: postList,
         deletePost: deletePost,
         createPost: createPost,
-        addPostFromServer: addPostFromServer,
+        fetching:fetching,
       }}
     >
       {children}

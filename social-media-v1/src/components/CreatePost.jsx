@@ -3,13 +3,13 @@ import { useContext } from "react";
 import { PostListContext } from "../store/post-list-store";
 
 const CreatePost = ({ setSelectedTab }) => {
+  const { createPost } = useContext(PostListContext);
+
   const userIdInputElement = useRef(null);
   const postTitleInputElement = useRef(null);
   const postBodyInputElement = useRef(null);
   const reactionsInputElement = useRef(null);
   const hashtagInputElement = useRef(null);
-
-  const { createPost } = useContext(PostListContext);
 
   const handleClick = (userId, postTitle, postBody, reactions, hashtag) => {
     userId = userIdInputElement.current.value;
@@ -18,12 +18,30 @@ const CreatePost = ({ setSelectedTab }) => {
     reactions = reactionsInputElement.current.value;
     hashtag = hashtagInputElement.current.value.split(" ");
 
-    createPost(userId, postTitle, postBody, reactions, hashtag);
-    userIdInputElement.current.value = "";
-    postTitleInputElement.current.value = "";
-    postBodyInputElement.current.value = "";
-    reactionsInputElement.current.value = "";
-    hashtagInputElement.current.value = "";
+    // userIdInputElement.current.value = "";
+    // postTitleInputElement.current.value = "";
+    // postBodyInputElement.current.value = "";
+    // reactionsInputElement.current.value = "";
+    // hashtagInputElement.current.value = "";
+
+    fetch("https://dummyjson.com/posts/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+        title: postTitle,
+        body: postBody,
+        reactions: reactions,
+        tags: hashtag,
+        /* other post data */
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        createPost(data);
+        console.log(data);
+      });
+
     setSelectedTab("Home");
   };
 
