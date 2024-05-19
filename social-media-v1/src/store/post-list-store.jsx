@@ -18,6 +18,7 @@ const reducerFunction = (currentState, action) => {
 
 const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(reducerFunction, []);
+  
 
   const deletePost = (postIdToBeDeleted) => {
     dispatchPostList({
@@ -46,36 +47,16 @@ const PostListProvider = ({ children }) => {
     });
   };
 
-  const [fetching, setFetching] = useState(false);
+ 
 
-  useEffect(() => {
-    if (postList.length === 0) {
-    
-      const controller = new AbortController();
-      const signal = controller.signal;
-
-      setFetching(true);
-      fetch("https://dummyjson.com/posts", { signal })
-        .then((res) => res.json())
-        .then((obj) => {
-          addPostFromServer(obj.posts);
-          setFetching(false);
-        });
-
-      return () => {
-        console.log("Fetch aborted");
-        controller.abort();
-      };
-    }
-  }, []);
-
+ 
   return (
     <PostListContext.Provider
       value={{
         postList: postList,
         deletePost: deletePost,
         createPost: createPost,
-        fetching:fetching,
+       
       }}
     >
       {children}

@@ -1,64 +1,17 @@
-import { useRef } from "react";
-import { useContext } from "react";
-import { PostListContext } from "../store/post-list-store";
+import { Form, redirect } from "react-router-dom";
 
-const CreatePost = ({ setSelectedTab }) => {
-  const { createPost } = useContext(PostListContext);
-
-  const userIdInputElement = useRef(null);
-  const postTitleInputElement = useRef(null);
-  const postBodyInputElement = useRef(null);
-  const reactionsInputElement = useRef(null);
-  const hashtagInputElement = useRef(null);
-
-  const handleClick = (userId, postTitle, postBody, reactions, hashtag) => {
-    userId = userIdInputElement.current.value;
-    postTitle = postTitleInputElement.current.value;
-    postBody = postBodyInputElement.current.value;
-    reactions = reactionsInputElement.current.value;
-    hashtag = hashtagInputElement.current.value.split(" ");
-
-    // userIdInputElement.current.value = "";
-    // postTitleInputElement.current.value = "";
-    // postBodyInputElement.current.value = "";
-    // reactionsInputElement.current.value = "";
-    // hashtagInputElement.current.value = "";
-
-    fetch("https://dummyjson.com/posts/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: userId,
-        title: postTitle,
-        body: postBody,
-        reactions: reactions,
-        tags: hashtag,
-        /* other post data */
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        createPost(data);
-        console.log(data);
-      });
-
-    setSelectedTab("Home");
-  };
+const CreatePost = () => {
+  // const { createPost } = useContext(PostListContext);
 
   return (
     <div className="create-post">
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleClick();
-        }}
-      >
+      <Form method="POST">
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
             Enter Your User Id
           </label>
           <input
-            ref={userIdInputElement}
+            name="userId"
             type="text"
             className="form-control"
             id="exampleInputEmail1"
@@ -72,7 +25,7 @@ const CreatePost = ({ setSelectedTab }) => {
             Post Title
           </label>
           <input
-            ref={postTitleInputElement}
+            name="title"
             type="text"
             className="form-control"
             id="exampleInputEmail1"
@@ -86,7 +39,7 @@ const CreatePost = ({ setSelectedTab }) => {
             Post
           </label>
           <textarea
-            ref={postBodyInputElement}
+            name="body"
             className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
@@ -100,7 +53,7 @@ const CreatePost = ({ setSelectedTab }) => {
             Reactions
           </label>
           <input
-            ref={reactionsInputElement}
+            name="reactions"
             type="number"
             className="form-control"
             id="exampleInputEmail1"
@@ -114,7 +67,7 @@ const CreatePost = ({ setSelectedTab }) => {
             Hashtags
           </label>
           <input
-            ref={hashtagInputElement}
+            name="tags"
             type="text"
             className="form-control"
             id="exampleInputEmail1"
@@ -126,8 +79,29 @@ const CreatePost = ({ setSelectedTab }) => {
         <button type="submit" className="btn btn-success">
           Create Post
         </button>
-      </form>
+      </Form>
     </div>
   );
 };
+
+export async function createPostAction(data) {
+  const formData = await data.request.formData();
+  const createPostDataForm = Object.fromEntries(formData);
+  createPostDataForm.tags = createPostDataForm.tags.split(" ");
+  // console.log(createPostDataForm);
+
+  fetch("https://dummyjson.com/posts/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(createPostDataForm),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // createPost(data);
+      console.log(data);
+    });
+
+  return redirect("/");
+}
+
 export default CreatePost;
